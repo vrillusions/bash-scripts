@@ -1,0 +1,3 @@
+# Bash Scripts
+
+Various bash scripts I use.  May be useful to others but no guarantees.
