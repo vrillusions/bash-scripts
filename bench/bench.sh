@@ -22,6 +22,8 @@ RAM=$(free -m | grep "Mem" | awk '{print $2 " MB"}')
 SWAP=$(free -m | grep "Swap" | awk '{print $2 " MB"}')
 UPTIME=$(uptime | sed -e "s/.*up \(.*\), .* users.*/\1/")
 
+date
+echo
 echo "CPU model:            $CPU_NAME"
 echo "Number of cores:      $CPU_CORES"
 echo "CPU frequency:        $CPU_FREQ"
