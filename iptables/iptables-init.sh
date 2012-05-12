@@ -4,7 +4,7 @@
 # iptables-save and iptables-load scripts.
 
 # setup IPv6 as well?
-IPV6=yes
+IPV6=no
 
 if [[ $EUID -ne 0 ]]; then
     echo "Must be run as root"
@@ -30,8 +30,8 @@ $IPTABLES -A LIMIT -j REJECT --reject-with icmp-port-unreachable
 # allow existing connections
 # NOTE: in openvz need to modprobe xt_tcpudp, ip_conntrack, and xt_state
 # conntrack is supposed to be "better" but doesn't work with openvz providers a lot
-$IPTABLES -I INPUT -m conntrack --ctstate ESTABLISHED,RELATED -j ACCEPT
-#$IPTABLES -I INPUT -m state --state ESTABLISHED,RELATED -j ACCEPT
+#$IPTABLES -I INPUT -m conntrack --ctstate ESTABLISHED,RELATED -j ACCEPT
+$IPTABLES -I INPUT -m state --state ESTABLISHED,RELATED -j ACCEPT
 
 # allow local interface
 $IPTABLES -A INPUT -i lo -j ACCEPT
@@ -42,8 +42,10 @@ $IPTABLES -A INPUT -p tcp -m tcp --dport 22 -m state --state NEW -m recent --upd
 $IPTABLES -A INPUT -p tcp -m tcp --dport 22 -j ACCEPT
 
 # some ports to allow
+# ssh is handled above
 #$IPTABLES -A INPUT -p tcp --dport 22 -j ACCEPT
 $IPTABLES -A INPUT -p tcp --dport 80 -j ACCEPT
+# example to allow full access from a single ip
 #$IPTABLES -A INPUT -s 192.231.162.0/23 -j ACCEPT
 
 # ok icmp codes
@@ -72,6 +74,7 @@ if [ "$IPV6" == "yes" ]; then
     $IP6TABLES -Z
     $IP6TABLES -X
 
+    # again, choose either conntrack or state, don't need both
     $IP6TABLES -I INPUT -m conntrack --ctstate ESTABLISHED,RELATED -j ACCEPT
     $IP6TABLES -A INPUT -i lo -j ACCEPT
     # allow link-local communications
