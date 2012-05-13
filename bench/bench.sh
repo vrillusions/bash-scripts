@@ -49,8 +49,8 @@ echo
 echo "BBC, UK"
 ping -q -c5 bbc.co.uk | tail -3
 echo
-echo "Gumtree, Austrailia"
-ping -q -c5 gumtree.com.au | tail -3
+echo "Whirlpool Broadband News, Austrailia"
+ping -q -c5 whirlpool.net.au | tail -3
 echo
 
 # now for downloads
