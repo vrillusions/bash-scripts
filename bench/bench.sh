@@ -49,7 +49,7 @@ echo
 echo "BBC, UK"
 ping -q -c5 bbc.co.uk | tail -3
 echo
-echo "Whirlpool Broadband News, Austrailia"
+echo "Whirlpool Broadband News, Australia"
 ping -q -c5 whirlpool.net.au | tail -3
 echo
 
