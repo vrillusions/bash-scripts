@@ -75,15 +75,17 @@ if [ "$IPV6" == "yes" ]; then
     $IP6TABLES -X
 
     # again, choose either conntrack or state, don't need both
-    $IP6TABLES -I INPUT -m conntrack --ctstate ESTABLISHED,RELATED -j ACCEPT
+    #$IP6TABLES -I INPUT -m conntrack --ctstate ESTABLISHED,RELATED -j ACCEPT
+    $IP6TABLES -I INPUT -m state --state ESTABLISHED,RELATED -j ACCEPT
     $IP6TABLES -A INPUT -i lo -j ACCEPT
     # allow link-local communications
     $IP6TABLES -A INPUT -s fe80::/10 -j ACCEPT
     # for stateless autoconfiguration (restrict NDP messages to hop limit of 255)
-    $IP6TABLES -A INPUT -p icmpv6 --icmpv6-type neighbor-solicitation -m hl --hl-eq 255 -j ACCEPT
-    $IP6TABLES -A INPUT -p icmpv6 --icmpv6-type neighbor-advertisement -m hl --hl-eq 255 -j ACCEPT
-    $IP6TABLES -A INPUT -p icmpv6 --icmpv6-type router-solicitation -m hl --hl-eq 255 -j ACCEPT
-    $IP6TABLES -A INPUT -p icmpv6 --icmpv6-type router-advertisement -m hl --hl-eq 255 -j ACCEPT
+    # commented out on openvz containers
+    #$IP6TABLES -A INPUT -p icmpv6 --icmpv6-type neighbor-solicitation -m hl --hl-eq 255 -j ACCEPT
+    #$IP6TABLES -A INPUT -p icmpv6 --icmpv6-type neighbor-advertisement -m hl --hl-eq 255 -j ACCEPT
+    #$IP6TABLES -A INPUT -p icmpv6 --icmpv6-type router-solicitation -m hl --hl-eq 255 -j ACCEPT
+    #$IP6TABLES -A INPUT -p icmpv6 --icmpv6-type router-advertisement -m hl --hl-eq 255 -j ACCEPT
     $IP6TABLES -A INPUT -p tcp --dport 22 -j ACCEPT
     $IP6TABLES -A INPUT -p tcp --dport 80 -j ACCEPT
     $IP6TABLES -A INPUT -p icmpv6 --icmpv6-type destination-unreachable -j ACCEPT
