@@ -53,7 +53,9 @@ $IPTABLES -A INPUT -p icmp --icmp-type destination-unreachable -j ACCEPT
 $IPTABLES -A INPUT -p icmp --icmp-type source-quench -j ACCEPT
 $IPTABLES -A INPUT -p icmp --icmp-type time-exceeded -j ACCEPT
 $IPTABLES -A INPUT -p icmp --icmp-type parameter-problem -j ACCEPT
-$IPTABLES -A INPUT -p icmp --icmp-type echo-request -j ACCEPT
+# can lower this if you're paranoid but 1 ping a second is fine.  If someone is trying
+# to ping flood they're going to do several a second
+$IPTABLES -A INPUT -p icmp --icmp-type echo-request -j ACCEPT -m limit --limit 60/minute
 
 # log unhandled packets
 $IPTABLES -A INPUT -m limit --limit 15/min -j LOG --log-prefix "[UNHANDLED INPUT PKT] " 
@@ -92,7 +94,9 @@ if [ "$IPV6" == "yes" ]; then
     $IP6TABLES -A INPUT -p icmpv6 --icmpv6-type packet-too-big -j ACCEPT
     $IP6TABLES -A INPUT -p icmpv6 --icmpv6-type time-exceeded -j ACCEPT
     $IP6TABLES -A INPUT -p icmpv6 --icmpv6-type parameter-problem -j ACCEPT
-    $IP6TABLES -A INPUT -p icmpv6 --icmpv6-type echo-request -j ACCEPT
+    $IP6TABLES -A INPUT -p icmpv6 --icmpv6-type echo-request -j ACCEPT -m limit --limit 60/minute
+    # need this for ip6tables but not iptables
+    $IP6TABLES -A INPUT -p icmpv6 --icmpv6-type echo-reply -j ACCEPT
 
     $IP6TABLES -P INPUT DROP
     $IP6TABLES -P FORWARD DROP
