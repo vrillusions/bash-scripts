@@ -77,6 +77,13 @@ apt-get -y dist-upgrade
 apt-get -y install "$APT_PKGS"
 
 # ---
+# regenerate times that crontab uses for things like @daily or @hourly
+# another one of those things that all vps guests probably have set to same thing
+echo "Generating new times for crontab run-parts commands (eg @daily)"
+echo "TODO"
+echo
+
+# ---
 # Post Report
 echo "Initial configuration completed!"
 echo "You should reconnect all ssh connections to use the new ssh key (remember"
