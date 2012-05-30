@@ -27,6 +27,9 @@ echo "Give the name of the new user to create:"
 read USER
 
 # ---
+# Make sure locale settings are correct
+
+# ---
 # regenerate ssh server keys - more than likely all vps guests have the same ssh
 # keys which isn't as secure as if you make your own
 # This affects new connections only so safe to run while connected via ssh
@@ -50,6 +53,13 @@ adduser $USER
 echo 
 
 # ---
+# And add to admin groups
+echo "Adding user $USER to sudo and adm groups"
+adduser $USER sudo
+adduser $USER adm
+echo
+
+# ---
 # SSH setup for new user
 echo "Generating ssh key for user $USER"
 echo "You'll be prompted for a password, typically this is left blank but feel"
@@ -57,9 +67,9 @@ echo "free to enter one"
 mkdir /home/$USER/.ssh
 chown $USER:$USER /home/$USER/.ssh
 chmod 700 /home/$USER/.ssh
-su -c "ssh-keygen -t rsa -b 2048 -f /home/$USER/.ssh/id_rsa"
+su -c "ssh-keygen -t rsa -b 2048 -f /home/$USER/.ssh/id_rsa" $USER
 if [ -f "sshkeys.txt" ]; then
-    cat sshkeys.txt /home/$USER/.ssh/authorized_keys
+    cat sshkeys.txt >/home/$USER/.ssh/authorized_keys
     chown $USER:$USER /home/$USER/.ssh/authorized_keys
     chmod 600 /home/$USER/.ssh/authorized_keys
 else
@@ -74,7 +84,7 @@ echo "Updating and configuring apt packages"
 dpkg --get-selections "*" >dpkg-original.txt
 apt-get update
 apt-get -y dist-upgrade
-apt-get -y install "$APT_PKGS"
+apt-get -y install $APT_PKGS
 
 # ---
 # regenerate times that crontab uses for things like @daily or @hourly
