@@ -34,7 +34,7 @@ read USER
 # keys which isn't as secure as if you make your own
 # This affects new connections only so safe to run while connected via ssh
 echo "Regenerate SSH Keys"
-rm -f /etc/sshd/ssh_host_*
+rm -f /etc/ssh/ssh_host_*
 /etc/init.d/ssh restart
 echo
 
