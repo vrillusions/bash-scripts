@@ -30,13 +30,17 @@ read USER
 # Make sure locale settings are correct
 
 # ---
-# regenerate ssh server keys - more than likely all vps guests have the same ssh
-# keys which isn't as secure as if you make your own
-# This affects new connections only so safe to run while connected via ssh
-echo "Regenerate SSH Keys"
-rm -f /etc/ssh/ssh_host_*
-/etc/init.d/ssh restart
-echo
+# DISABLED FOR NOW
+## TODO: actually regen the keys and don't rely on ssh init script to do it
+## regenerate ssh server keys - more than likely all vps guests have the same ssh
+## keys which isn't as secure as if you make your own
+## This affects new connections only so safe to run while connected via ssh
+#echo "Regenerate SSH Keys"
+#rm -f /etc/ssh/ssh_host_*
+## ecdsa doesn't regen automatically
+#ssh-keygen -t ecdsa -f ssh_host_ecdsa_key -N ""
+#/etc/init.d/ssh restart
+#echo
 
 # ---
 echo "Disabling root login"
