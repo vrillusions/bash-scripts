@@ -25,9 +25,18 @@ echo
 # initial Q&A
 echo "Give the name of the new user to create:"
 read USER
+echo
 
 # ---
 # Make sure locale settings are correct
+# Even when setup the only one that's set is $LANG so unsure how to verify this
+echo "Setting locale"
+export LANGUAGE=en_US.UTF-8
+export LANG=en_US.UTF-8
+export LC_ALL=en_US.UTF-8
+locale-gen en_US.UTF-8
+dpkg-reconfigure locales
+echo
 
 # ---
 # DISABLED FOR NOW
@@ -91,6 +100,22 @@ apt-get -y dist-upgrade
 apt-get -y install $APT_PKGS
 
 # ---
+# setup denyhosts
+echo "Setting up denyhosts"
+echo "TODO"
+echo
+
+# ---
+# setup iptables
+echo "Configuring iptables"
+echo "TODO"
+cd /root
+wget -q https://raw.github.com/vrillusions/bash-scripts/master/iptables/iptables-init.sh
+wget -q https://raw.github.com/vrillusions/bash-scripts/master/iptables/iptables-reset.sh
+echo "Placed scripts in /root"
+echo
+
+# ---
 # regenerate times that crontab uses for things like @daily or @hourly
 # another one of those things that all vps guests probably have set to same thing
 echo "Generating new times for crontab run-parts commands (eg @daily)"
@@ -109,6 +134,9 @@ echo "Also once you verified ssh keys work you should disable PasswordAuthentica
 echo
 echo "Since dist-upgrade was run it's recommended you restart the vps as there"
 echo "may have been some system updates that require it."
+echo
+echo "While iptables wasn't configured the scripts were downloaded. Make them executable"
+echo "and verify they work before adding to /etc/rc.local"
 
 exit 0
 
