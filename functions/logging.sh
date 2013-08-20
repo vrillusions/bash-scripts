@@ -8,7 +8,7 @@
 # script. Also doesn't need to be executable.
 #
 # Expected environment variables:
-#   DEBUG - debug function will only print out of this is 'true'
+#   VERBOSE - verbose function will only print out of this is 'true'
 #
 
 # log "What to log"
@@ -16,9 +16,9 @@ log () {
     printf "%b\n" "$(date +"%Y-%m-%dT%H:%M:%S%z") $*"
 }
 
-# debug "What to log if verbose is true"
-debug () {
-    if [[ "x$DEBUG" == "xtrue" ]]; then
+# verbose "What to log if verbose is true"
+verbose () {
+    if [[ "x$VERBOSE" == "xtrue" ]]; then
         log "$*"
     fi
 }
