@@ -15,18 +15,18 @@
 
 SPIDEROAK='/usr/bin/SpiderOak'
 
-echodate () {
-    echo "$(date +"%Y-%m-%dT%H:%M:%S%z") $@"
+log () {
+    printf "%b\n" "$(date +"%Y-%m-%dT%H:%M:%S%z") $*"
 }
 
 spideroak_cleanup_dir() {
-    echodate "Exclude and Purge directory: $1"
+    log "Exclude and Purge directory: $1"
     $SPIDEROAK --exclude-dir=$1 >/dev/null
     $SPIDEROAK --purge=$1 >/dev/null
 }
 
 spideroak_cleanup_file() {
-    echodate "Exclude and Purge file: $1"
+    log "Exclude and Purge file: $1"
     $SPIDEROAK --exclude-file=$1 >/dev/null
     $SPIDEROAK --purge=$1 >/dev/null
 }
