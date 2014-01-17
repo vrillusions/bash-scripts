@@ -1,3 +1,7 @@
 # Bash Scripts [![Project Status](http://stillmaintained.com/vrillusions/bash-scripts.png)](http://stillmaintained.com/vrillusions/bash-scripts)
 
 Various bash scripts I use.  May be useful to others but no guarantees.
+
+## License
+
+All scripts unless specified otherwise are "Licensed" via unlicense. See LICENSE.txt for full text.
