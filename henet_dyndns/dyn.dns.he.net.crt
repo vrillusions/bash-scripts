@@ -1,0 +1,80 @@
+CONNECTED(00000003)
+---
+Certificate chain
+ 0 s:/C=US/ST=CA/L=Fremont/O=Hurricane Electric/OU=Secure Services/CN=dyn.dns.he.net/emailAddress=dnsadmin@he.net
+   i:/C=US/ST=CA/L=Fremont/O=Hurricane Electric/OU=Secure Services/CN=dyn.dns.he.net/emailAddress=dnsadmin@he.net
+---
+Server certificate
+-----BEGIN CERTIFICATE-----
+MIIFtjCCA54CCQC5vsyLyslykjANBgkqhkiG9w0BAQUFADCBnDELMAkGA1UEBhMC
+VVMxCzAJBgNVBAgTAkNBMRAwDgYDVQQHEwdGcmVtb250MRswGQYDVQQKExJIdXJy
+aWNhbmUgRWxlY3RyaWMxGDAWBgNVBAsTD1NlY3VyZSBTZXJ2aWNlczEXMBUGA1UE
+AxMOZHluLmRucy5oZS5uZXQxHjAcBgkqhkiG9w0BCQEWD2Ruc2FkbWluQGhlLm5l
+dDAeFw0xMTAzMjYwMzQ4NTJaFw0yMTAzMjMwMzQ4NTJaMIGcMQswCQYDVQQGEwJV
+UzELMAkGA1UECBMCQ0ExEDAOBgNVBAcTB0ZyZW1vbnQxGzAZBgNVBAoTEkh1cnJp
+Y2FuZSBFbGVjdHJpYzEYMBYGA1UECxMPU2VjdXJlIFNlcnZpY2VzMRcwFQYDVQQD
+Ew5keW4uZG5zLmhlLm5ldDEeMBwGCSqGSIb3DQEJARYPZG5zYWRtaW5AaGUubmV0
+MIICIjANBgkqhkiG9w0BAQEFAAOCAg8AMIICCgKCAgEAz5UjeG78+Nym6CdddKRd
+WydHm0Hodx02iP1ko6C+DpiU2skjPL5pzzI9SYStzuCBHueIrtA7HKuEBCGyPmDx
+N0D95jY7ekOgNxklgviuFISt6HfXTss0G22HjPqkM/GTvTiwyVMQFlgcgbUrP6N9
+XwZR0l/Ej2YeFFajNtw2vWNG0DoGGbstfYmqRfvq2n/9Rgmkg4LTkcne4+0uuYXZ
+ZNiTcVAOWaGA29OrQ9Vs3bJeMNyEyXoz2sw16EpmXiz5zr1G0hxg5AXIpmvI0jqG
+jAOXSzri1KVKA4BI/16tM86GzIAui7wzOKtq9wF1llWHsmU/cb1HmAUbOnjBmDEI
+hJ5vFCPjmtmaZxBckvs5SG8NrZw+EwE5GvnTKSJTYpQBfiTTJ9VaGmq55VPrdnUN
+CEwI5SRtl2TBr3cVdloRoZ1m6I3ZdBVuI8kSs9zkKxP5iSjt9FLp89J+36CDS6oo
+LH5jmhWIc6K1n98BJYnBgAuvENcq/VsnGD2uwfNSoh7qtZ1wLzao6TI4GgnuX4TG
+XsVtTNTZp7fHXY2GCgEK29e2VU9SpdmYwv3Gjb1t1m9GDs7XL7lhLqmfoz7pdfJn
+r4p6t6QtC0X/epl8V0fpn14ZP1GqIrUE3fJb70wnJga4HG2RdhgVN7eSQ4qz6tpT
+J0GMAGllZZA4gf8xrFkWKlkCAwEAATANBgkqhkiG9w0BAQUFAAOCAgEAURteQcn0
+2C12U335BqtHv2D5LL0V2DUSo0u4ZjHMC06T4/sY05azqsMY1kcRvc9TVMFd1Pik
+n5ZqBkSbiF9JYQhUKdzYMSQvGwCulp/pmjan0u1YPgvF+pwcmt/4riOt/1PdviXG
+XoeBdvoGuN+gatRAF9eGcxPhk0VqxobMMW5NrOHz8vprl1z/EYqlHDnKCcIGeIeI
+awc7eqDnYGCGG9YsoGunbHCKLpSSu6TKUW5FMc4RsLmvxuXMPcOMoiZ++vZT4QwT
+ISVgDQRv6azbJWx0kXY3HTAFEJ7Y8S8Cd95qP0BGAOC5TNxF4dUdVEfuS7yk+7EE
+FE59uu0xAHiBfKJD8iEUAUrT9jw2odDJGJ0N2pclIwCXAPdZuT1FaROVHKe+rwiA
+83n/R1ZbjBUhyQSf0Xr8OGvryT+gZ8IuhADmA20Gpy1FjlZAYQtravVtKXjIpRTA
+04m5j3A8zm3dLNCA8oh/1LK4UeJUD/YVz4QVkQdY/jnm3rRWlux21qJIC/9jlJdW
+hIKJ/ZABaly+7MRtOiucRs20iXO3vi7rkGr7rdQjserxSsJi8Bj/ohGnBFKF4Syt
+n/4OG9LX9F04CYVB4Lf4S1zP299eArfQ4Lpt+dXb85aHP4HGg1Aq9rxVPZcfI6WY
+BBV9BRUtZTDY6D39PmUzJhs0GQuBlZHRWNM=
+-----END CERTIFICATE-----
+subject=/C=US/ST=CA/L=Fremont/O=Hurricane Electric/OU=Secure Services/CN=dyn.dns.he.net/emailAddress=dnsadmin@he.net
+issuer=/C=US/ST=CA/L=Fremont/O=Hurricane Electric/OU=Secure Services/CN=dyn.dns.he.net/emailAddress=dnsadmin@he.net
+---
+No client certificate CA names sent
+---
+SSL handshake has read 2600 bytes and written 423 bytes
+---
+New, TLSv1/SSLv3, Cipher is DHE-RSA-AES256-SHA
+Server public key is 4096 bit
+Secure Renegotiation IS supported
+Compression: NONE
+Expansion: NONE
+SSL-Session:
+    Protocol  : TLSv1
+    Cipher    : DHE-RSA-AES256-SHA
+    Session-ID: 4CA0747D3EA2C07A0C33A981C0D2405FDA1C81FD2E47DFF91C051F6FFA27D0D8
+    Session-ID-ctx: 
+    Master-Key: 3B6746EDC01840B73F3E50A0B59699D1F3C99FADB18A610473EC4A77D8FBEFA52799CCA9E221CC592E8D9661785325B0
+    Key-Arg   : None
+    PSK identity: None
+    PSK identity hint: None
+    SRP username: None
+    TLS session ticket:
+    0000 - 3c f3 cd a5 89 7f 26 c5-6b 10 9d 2e 23 fa af eb   <.....&.k...#...
+    0010 - 59 f2 1c fb 97 b9 c7 2e-2d f5 68 2d 06 0d 9b e7   Y.......-.h-....
+    0020 - 8e 1c 99 db ec a1 28 63-8b 3f 47 80 f3 f0 4c 42   ......(c.?G...LB
+    0030 - 57 2a 00 cf cf 32 56 15-9a 21 ea a9 bc a1 ad 39   W*...2V..!.....9
+    0040 - 03 80 71 c5 36 4c ff 2d-e1 dd ae 1d fb d0 42 65   ..q.6L.-......Be
+    0050 - 98 ee a4 f9 67 1e dd 31-eb 2a 18 be 63 80 74 51   ....g..1.*..c.tQ
+    0060 - 29 42 61 b8 27 9c 39 11-bd 6a 8c ba 3d 0b da a7   )Ba.'.9..j..=...
+    0070 - f5 d6 bf 2e 4f 71 dc d0-bc a9 41 3f ee c9 68 30   ....Oq....A?..h0
+    0080 - 04 c3 18 b6 c5 a5 89 cf-11 b8 95 bd 68 c7 b7 0c   ............h...
+    0090 - 24 d8 47 e1 a6 b4 34 13-00 38 af da 5e eb 8c 19   $.G...4..8..^...
+    00a0 - 83 ec 94 11 fe 3c c2 79-11 e5 5a eb df fd 9c 35   .....<.y..Z....5
+    00b0 - 77 14 e7 7c 3b d9 1e 89-d7 4f d9 81 b1 62 ff 9e   w..|;....O...b..
+
+    Start Time: 1394943653
+    Timeout   : 300 (sec)
+    Verify return code: 18 (self signed certificate)
+---
