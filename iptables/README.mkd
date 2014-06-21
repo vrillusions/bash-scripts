@@ -1,10 +1,5 @@
-# Recommended Usage
+# This has been moved to it's own project
 
-- download both files to /root
-- make both executable
-- edit `iptables-init.sh` to your liking and run it.
-- if you can no longer connect reboot the server
-- if everything is working--or at least can still ssh to server--copy the file to `iptables-init-verified.sh`.
-- in `/etc/rc.local` add `/root/iptables-init-verified.sh >/dev/null`
-- now when modifying rules always edit and run `iptables-init.sh`.  If everything is fine then copy it to `iptables-init-verifed.sh`.  This way if you lock yourself out you can always do a remote reboot of the server to get access again.
-- alternatively if this is for a VPS that lets you send commands via a control panel.  You can have it run `/root/iptables-reset.sh` to give you access again without having to restart server.
+Since this seems to be a popular section I split it off into it's own github project: https://github.com/vrillusions/iptables-init
+
+If you are just looking for the last version that existed here, it would be from commit 051b6c797d .
