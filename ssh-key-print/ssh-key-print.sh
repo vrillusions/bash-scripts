@@ -4,15 +4,8 @@
 # verify you are connecting to the correct server
 
 
-### Bash options
-# exit upon receiving a non-zero exit code
 set -e
-# enable debuging
-#set -x
-# upon attempt to use an unset variable, print error and exit
 set -u
-# fail on first command in pipeline that fails, not last
-#set -o pipefail
 
 
 ### Logging functions
@@ -31,6 +24,12 @@ while getopts ":h" opt; do
 
         printf "options:\n"
         printf "  -%1s  %s\n" "h" "this help message"
+
+        printf "\nWhat each type means:\n"
+        printf " %6s - %s\n" "SSH" "fingerprint as ssh will show it upon first connect"
+        printf " %6s - %s\n" "SHA1" "SHA1 hash of key"
+        printf " %6s - %s\n" "SHA256" "SHA256 hash of key"
+        printf " %6s - %s\n" "DNS" "SSHFP record to place in dns"
         exit 0
         ;;
     \?)
@@ -42,56 +41,75 @@ done
 shift `expr $OPTIND - 1`
 
 
-# Centers text. if second param isn't given then 72 is assumed
-# Usage: center "This is my text" 50
-center () {
-    local width
-    local padding
-    local result
-    if [[ $# -eq 1 ]]; then
-        width=74
-    elif [[ $# -eq 2 ]]; then
-        width=$2
-    else
-        log "(center) ERROR: must specify one or two arguments"
+# Given a key type will output the dns type value
+# Usage: get_dns_type "ECDSA"
+get_dns_type () {
+    local key_type
+    local dns_type
+    if [[ -z "$1" ]]; then
+        log "(get_dns_type) ERROR: must specify one argument"
         exit 1
     fi
-    padding=$[${width} / 2 + ${#1} / 2]
-    printf "%*s" ${padding} "${1}"
+    key_type=$(echo $1 | tr '[:lower:]' '[:upper:]')
+    case "${key_type}" in
+        DSA)
+            dns_type=1
+            ;;
+        RSA)
+            dns_type=2
+            ;;
+        ECDSA)
+            dns_type=3
+            ;;
+        *)
+            dns_type="UNKNOWN"
+            ;;
+    esac
+    echo ${dns_type}
 }
 
-# Takes two arguments. Type of key and then filename
-# Usage: process_key "ECDSA" "/etc/ssh/ssh_host_ecdsa_key.pub"
-# TODO:2013-12-15:teddy: the type can be extracted from ssh-keygen
+# Takes one argument which is the filename of host's public key
+# Usage: process_key "/etc/ssh/ssh_host_ecdsa_key.pub"
 process_key () {
     local filename
     local key_bytes
+    local keygen_info
     local fingerprint
+    local key_type
     local sha1
     local sha256
-    if [[ $# -ne 2 ]]; then
-        log "(process_key) ERROR: requires exactly two arguments"
+
+    if [[ $# -ne 1 ]]; then
+        log "(process_key) ERROR: requires exactly one argument"
         exit 1
     fi
-    if [[ -f $2 ]]; then
-        filename="$2"
+
+    filename="$1"
+
+    if [[ -f "${filename}" ]]; then
         key_bytes="$(awk '{print $2}' ${filename} | openssl base64 -d -A)"
-        fingerprint="$(ssh-keygen -l -f ${filename} | awk '{print $2}')"
-        sha1="$(echo -n "${key_bytes}" | openssl sha1 | awk '{print $2'})"
-        sha256="$(echo -n "${key_bytes}" | openssl sha256 | awk '{print $2'})"
-        printf "\n %-7s %s\n" "$(center "${1}:" 7)" "${fingerprint}"
-        printf " SHA1:   %s\n" "${sha1}"
-        printf " SHA256: %s\n" "${sha256}"
+        # alternative method:
+        #fingerprint="$(echo -n "${key_bytes}" | openssl md5 | awk '{print $2}' | sed -e 's/../&:/g' -e 's/:$//g')"
+        #keygen_info=ssh-keygen -l -f /etc/ssh/ssh_host_rsa_key.pub | tr -d '()' | cut -d' ' -f 5
+        keygen_info="$(ssh-keygen -l -f ${filename})"
+        fingerprint="$(echo "${keygen_info}" | cut -d' ' -f2)"
+        key_type="$(echo "${keygen_info}" | cut -d' ' -f5 | tr -d '()')"
+        sha1="$(echo -n "${key_bytes}" | openssl sha1 | awk '{print $2}')"
+        sha256="$(echo -n "${key_bytes}" | openssl sha256 | awk '{print $2}')"
+        printf "\n%s\n" "${key_type}"
+        printf " %6s: %s\n" "SSH" "${fingerprint}"
+        printf " %6s: %s\n" "SHA1" "${sha1}"
+        printf " %6s: %s\n" "SHA256" "${sha256}"
+        printf " %6s: %s\n" "DNS" "$(hostname -f). 86400 IN SSHFP $(get_dns_type ${key_type}) 1 ${sha1}"
     fi
 }
 
 ### Actual script begins here
-#printf "%74s\n" "74 charaters end here|"
-HOSTUPPER=$(hostname -f | tr '[:lower:]' '[:upper:]')
-printf "\n%s\n" "$(center "SSH KEYS FOR HOST ${HOSTUPPER}")"
-process_key "DSA" "/etc/ssh/ssh_host_dsa_key.pub"
-process_key "RSA" "/etc/ssh/ssh_host_rsa_key.pub"
-process_key "ECDSA" "/etc/ssh/ssh_host_ecdsa_key.pub"
+hostupper=$(hostname -f | tr '[:lower:]' '[:upper:]')
+printf "%s\n" "SSH KEYS FOR HOST ${hostupper}"
+process_key "/etc/ssh/ssh_host_dsa_key.pub"
+process_key "/etc/ssh/ssh_host_rsa_key.pub"
+process_key "/etc/ssh/ssh_host_ecdsa_key.pub"
 
 exit 0
 
