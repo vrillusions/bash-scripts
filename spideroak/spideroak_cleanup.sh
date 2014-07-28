@@ -1,4 +1,4 @@
-#!/bin/bash -e
+#!/bin/bash
 #
 # As the backups run you'll notice certain files that change often but are not
 # really important to back up.  For example the .bash_history file changes
@@ -13,7 +13,11 @@
 # typed the path in wrong. If it's expected then you can add "--force" to the
 # functions
 
-SPIDEROAK='/usr/bin/SpiderOak'
+set -e
+set -u
+
+spideroak_cmd='/usr/bin/SpiderOak'
+
 
 log () {
     printf "%b\n" "$(date +"%Y-%m-%dT%H:%M:%S%z") $*"
@@ -21,24 +25,25 @@ log () {
 
 spideroak_cleanup_dir() {
     log "Exclude and Purge directory: $1"
-    $SPIDEROAK --exclude-dir=$1 >/dev/null
-    $SPIDEROAK --purge=$1 >/dev/null
+    "${spideroak_cmd}" --exclude-dir=$1 >/dev/null
+    "${spideroak_cmd}" --purge=$1 >/dev/null
 }
 
 spideroak_cleanup_file() {
     log "Exclude and Purge file: $1"
-    $SPIDEROAK --exclude-file=$1 >/dev/null
-    $SPIDEROAK --purge=$1 >/dev/null
+    "${spideroak_cmd}" --exclude-file=$1 >/dev/null
+    "${spideroak_cmd}" --purge=$1 >/dev/null
 }
 
-# I typically keep these around but comment them out after I run them once.
-spideroak_cleanup_dir /root/.cache
 
-spideroak_cleanup_file /root/.bash_history
-spideroak_cleanup_file /root/.viminfo
+# I typically keep these around but comment them out after I run them once.
+spideroak_cleanup_dir "/root/.cache"
+
+spideroak_cleanup_file "/root/.bash_history"
+spideroak_cleanup_file "/root/.viminfo"
 
 
 # Print out current selection
-$SPIDEROAK --selection
+"${spideroak_cmd}" --selection
 
 exit 0
