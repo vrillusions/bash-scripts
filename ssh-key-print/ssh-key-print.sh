@@ -60,10 +60,10 @@ get_dns_type () {
     fi
     key_type=$(echo $1 | tr '[:lower:]' '[:upper:]')
     case "${key_type}" in
-        DSA)
+        RSA)
             dns_type=1
             ;;
-        RSA)
+        DSA)
             dns_type=2
             ;;
         ECDSA)
@@ -80,7 +80,7 @@ get_dns_type () {
 # Usage: process_key "/etc/ssh/ssh_host_ecdsa_key.pub"
 process_key () {
     local filename
-    local key_bytes
+    local pubkey
     local keygen_info
     local fingerprint
     local key_type
@@ -97,15 +97,15 @@ process_key () {
     filename="$1"
 
     if [[ -f "${filename}" ]]; then
-        key_bytes="$(awk '{print $2}' ${filename} | openssl base64 -d -A)"
+        pubkey="$(awk '{print $2}' ${filename})"
         # alternative method:
         #fingerprint="$(echo -n "${key_bytes}" | openssl md5 | awk '{print $2}' | sed -e 's/../&:/g' -e 's/:$//g')"
         #keygen_info=ssh-keygen -l -f /etc/ssh/ssh_host_rsa_key.pub | tr -d '()' | cut -d' ' -f 5
         keygen_info="$(ssh-keygen -l -f ${filename})"
         fingerprint="$(echo "${keygen_info}" | cut -d' ' -f2)"
         key_type="$(echo "${keygen_info}" | cut -d' ' -f5 | tr -d '()')"
-        sha1="$(echo -n "${key_bytes}" | openssl sha1 | awk '{print $2}')"
-        sha256="$(echo -n "${key_bytes}" | openssl sha256 | awk '{print $2}')"
+        sha1="$(echo "${pubkey}" | openssl base64 -d -A | openssl sha1 | awk '{print $2}')"
+        sha256="$(echo "${pubkey}" | openssl base64 -d -A | openssl sha256 | awk '{print $2}')"
         dns_sha1="$(hostname -f). 86400 IN SSHFP $(get_dns_type ${key_type}) 1 ${sha1}"
         dns_sha256="$(hostname -f). 86400 IN SSHFP $(get_dns_type ${key_type}) 2 ${sha256}"
         echo "${dns_sha1}" >>"${tmpfile}"
@@ -122,8 +122,8 @@ process_key () {
 ### Actual script begins here
 hostupper=$(hostname -f | tr '[:lower:]' '[:upper:]')
 printf "%s\n" "SSH KEYS FOR HOST ${hostupper}"
-process_key "/etc/ssh/ssh_host_dsa_key.pub"
 process_key "/etc/ssh/ssh_host_rsa_key.pub"
+process_key "/etc/ssh/ssh_host_dsa_key.pub"
 process_key "/etc/ssh/ssh_host_ecdsa_key.pub"
 printf "\n%s\n" "ALL THE DNS RECORDS IN ONE BLOCK"
 cat "${tmpfile}"
