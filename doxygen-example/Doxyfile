@@ -1,0 +1,14 @@
+# This seems to require doxygen < v1.8.8
+# https://bugzilla.gnome.org/show_bug.cgi?id=748186
+
+FILE_PATTERNS        = *.sh *.awk
+INPUT_FILTER         = "sed -e 's|##|//!|'"
+FILTER_SOURCE_FILES  = YES
+
+GENERATE_LATEX       = NO
+
+# This defaults to no
+GENERATE_TREEVIEW    = NO
+
+# Set this to NO to disable messages about documenting params that don't exist
+WARN_IF_DOC_ERROR    = YES
