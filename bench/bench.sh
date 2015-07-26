@@ -85,13 +85,14 @@ for TEST_FILE in "${TEST_FILES[@]}"; do
     echo -n "$NAME:  "
     echo "$(($(curl -s -o /dev/null --write-out %{speed_download} $URL | cut -d'.' -f1) / 1000)) KB/sec"
 done
+echo
 
 if [[ "${BENCH_OPENSSL_EC:-true}" != 'true' ]]; then
     ciphers='sha256 aes-128-cbc aes-256-cbc ecdsap256 ecdhp256'
 else
     ciphers='sha256 aes-128-cbc aes-256-cbc'
 fi
-echo -n "Beginning CPU tests (won't see output for 1 or 2 minutes)"
+echo "Beginning CPU tests (won't see output for 1 or 2 minutes):"
 openssl speed ${ciphers} 2>/dev/null | tail -n +6
 
 exit 0
