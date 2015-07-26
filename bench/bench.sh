@@ -8,11 +8,20 @@
 # LICENSE: Public Domain / do whatever you want just don't sue me if something
 # blows up.
 #
+# Environment variables:
+#
+# BENCH_OPENSSL_EC - run speed tests against a couple elliptic curve algorithms.
+#   Anything other than 'true' will skip them (may be needed on older systems).
+#   Default is 'true'
+#
 # TODO: make in python since bash is so clunky to do advanced stuff in
+
+_version='1.1'
 
 # make sure we have everything we need
 # TODO: I'm sure there's a better way to do this
 CURL=$(which curl) || eval "echo 'Please install curl'; exit 1"
+CURL=$(which openssl) || eval "echo 'Please install openssl'; exit 1"
 
 # Gather info
 CPU_NAME=$(cat /proc/cpuinfo | grep "model name" | uniq | sed -e "s/^model name\s*: //")
@@ -22,6 +31,7 @@ RAM=$(free -m | grep "Mem" | awk '{print $2 " MB"}')
 SWAP=$(free -m | grep "Swap" | awk '{print $2 " MB"}')
 UPTIME=$(uptime | sed -e "s/.*up \(.*\), .* users.*/\1/")
 
+echo "bench.sh v${_version}"
 date
 echo
 echo "CPU model:            $CPU_NAME"
@@ -75,5 +85,13 @@ for TEST_FILE in "${TEST_FILES[@]}"; do
     echo -n "$NAME:  "
     echo "$(($(curl -s -o /dev/null --write-out %{speed_download} $URL | cut -d'.' -f1) / 1000)) KB/sec"
 done
+
+if [[ "${BENCH_OPENSSL_EC:-true}" != 'true' ]]; then
+    ciphers='sha256 aes-128-cbc aes-256-cbc ecdsap256 ecdhp256'
+else
+    ciphers='sha256 aes-128-cbc aes-256-cbc'
+fi
+echo -n "Beginning CPU tests (won't see output for 1 or 2 minutes)"
+openssl speed ${ciphers} 2>/dev/null | tail -n +6
 
 exit 0

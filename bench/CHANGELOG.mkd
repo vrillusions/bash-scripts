@@ -1,0 +1,8 @@
+## v1.1 - 2015-07-26
+
+- add version header to output
+- add cpu benchmarking via openssl
+
+## v1.0 - unknown release day
+
+- Initial release
