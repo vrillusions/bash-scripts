@@ -1,0 +1,123 @@
+#!/bin/sh
+#Backup VMware instance
+# This script is modified by Janov Nguyen on Dec 2nd 2013, tested OK on ESXi 5.1.
+#
+# src (this version specificially was in comments)
+# http://www.jamescoyle.net/how-to/313-backup-esxi-5-x-running-virtual-machine
+
+echo ""
+echo "-------------------------------"
+echo "- VM Backup Script -"
+echo "- James Coyle -"
+echo "-------------------------------"
+echo ""
+
+#Config
+#root path to where your running instances are stored.
+BASE_PATH="/vmfs/volumes/datastore1/"
+
+#root path to where you would like to save the backup
+BACKUP_ROOT="/vmfs/volumes/datastore1/Backup/"
+
+#Do not edit
+if [ "$1" ]; then
+MACHINE=$1
+
+else
+#MACHINE=$1
+echo "Enter machine name: "
+read MACHINE
+
+fi
+
+BACKUP_APPEND=$(date +"%Y%m%d-%H%M%S")
+MACHINE_PATH="$BASE_PATH$MACHINE/"
+BACKUP_PATH="$BACKUP_ROOT$MACHINE$BACKUP_APPEND/"
+
+if [ -d $MACHINE_PATH ] && [ -d $BACKUP_ROOT ]; then
+
+cd $MACHINE_PATH
+
+VIMID=`vim-cmd vmsvc/getallvms | egrep -o "[0-9]+[ ]+$MACHINE" | cut -d" " -f1`
+
+if [ -z VIMID ]; then
+echo "Could not get VM ID."
+vim-cmd vmsvc/getallvms
+
+echo ""
+echo "Enter vimid of $MACHINE"
+read VIMID
+echo ""
+echo ""
+
+fi
+
+#Get existing files
+FILE_ARRAY=`find $MACHINE_PATH -type f`
+
+I=0
+for T in $FILE_ARRAY[@]
+do
+#echo "$I[$T]"
+I=$((I+1))
+done
+
+echo "- Backup info"
+echo "-------------------------------"
+echo " Machine path: $MACHINE_PATH"
+echo " Backup path: $BACKUP_PATH"
+echo " Using VM ID: $VIMID."
+echo " Machine name: $MACHINE."
+echo " Files in Machine folder: $I."
+echo ""
+
+echo "- Starting backup"
+echo "-------------------------------"
+mkdir $BACKUP_PATH
+
+echo " Creating snapshot..."
+vim-cmd vmsvc/snapshot.create $VIMID tempbackupsnapshot
+echo " Snapshot complete."
+IFS='
+'
+for A in $FILE_ARRAY
+do
+if [ -n "`echo \"$A\" | egrep '.vmdk|.nvram|.vmx'`" ] ; then
+FILESIZE=$(stat -c%s "$A")
+echo " Copying file: $A - Size: $FILESIZE bytes"
+cp "$A" "$BACKUP_PATH"
+
+else
+echo " Skipping file: $A"
+
+fi
+
+done
+
+#Remove snapshot
+echo " Removing snapshot..."
+vim-cmd vmsvc/snapshot.removeall $VIMID
+echo " Snapshot removed."
+
+echo " Starting compression..."
+tar -czpf "$BACKUP_ROOT/$MACHINE-$BACKUP_APPEND.tgz" "$BACKUP_PATH"
+echo " Compression complete."
+
+echo " Removing backup temp..."
+rm -rf "$BACKUP_PATH"
+echo " Removed temp files."
+
+echo ""
+echo "-------------------------------"
+echo " Backup Complete!"
+echo "-------------------------------"
+
+else
+echo ""
+echo ""
+echo "-------------------------------"
+echo " Error"
+echo "-------------------------------"
+echo " Folder $MACHINE_PATH or $BACKUP_ROOT does not exists"
+#exit 1
+fi
