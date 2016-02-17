@@ -1,4 +1,4 @@
-# Bash Scripts [![Project Status](http://stillmaintained.com/vrillusions/bash-scripts.png)](http://stillmaintained.com/vrillusions/bash-scripts)
+# Bash Scripts
 
 Various bash scripts I use.  May be useful to others but no guarantees.
 
