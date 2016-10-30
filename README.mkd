@@ -1,5 +1,7 @@
 # Bash Scripts
 
+[![Build Status](https://travis-ci.org/vrillusions/bash-scripts.svg?branch=master)](https://travis-ci.org/vrillusions/bash-scripts)
+
 Various bash scripts I use.  May be useful to others but no guarantees.
 
 ## License

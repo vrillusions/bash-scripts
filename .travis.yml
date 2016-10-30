@@ -1,0 +1,13 @@
+language: bash
+env:
+  global:
+    - SHELLCHECK_VERSION=0.4.5
+install:
+  - ./tests/install.sh
+script:
+  - ./tests/run_tests.sh
+notifications:
+  email: false
+os:
+  - linux
+  - osx
