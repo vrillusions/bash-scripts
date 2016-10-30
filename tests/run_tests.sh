@@ -39,6 +39,7 @@ fi
 # be useful if you hit some weird issue and you don't know what file is causing
 # it. Also without those options it doesn't list out the files so you're not
 # certain if it's actually being picked up.
+retcode=0
 find . -type f -name "*.sh" -print0 \
     | xargs -0 ${xargs_custom_opts} shellcheck \
     || retcode=$?
