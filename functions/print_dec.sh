@@ -1,4 +1,7 @@
 
+# only intended to be sourced, not run directly so no `#!/bin/bash`
+# shellcheck shell=bash
+#
 # Prints the given value as a decimal. This is used because bash will see
 # numbers with a leading zero as an octal value. This function reassigns the
 # value prefixing it with '10#' which says to treat it as base-10 which has the
@@ -17,6 +20,6 @@
 #
 print_dec () {
     local value
-    let value=10#$1
+    value=$(( 10#$1 ))
     printf "%d" $value
 }

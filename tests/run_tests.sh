@@ -22,7 +22,7 @@ log () {
     # logger will output to syslog, useful for background tasks
     #logger -s -t "${script_name}" -- "$*"
     # printf is good for scripts run manually when needed
-    printf "%b\n" "$(date +"%Y-%m-%dT%H:%M:%S%z") $*"
+    printf "%b\\n" "$(date +"%Y-%m-%dT%H:%M:%S%z") $*"
 }
 
 log "Running shellcheck in $(pwd)"

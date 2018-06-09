@@ -18,7 +18,7 @@ set -u
 
 # -- Script-wide variables --
 readonly script_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-readonly script_name="$(basename $0)"
+readonly script_name="$(basename "$0")"
 
 
 # -- Logging functions --
@@ -27,7 +27,7 @@ log () {
     # logger will output to syslog, useful for background tasks
     #logger -s -t "${script_name}" -- "$*"
     # printf is good for scripts run manually when needed
-    printf "%b\n" "$(date +"%Y-%m-%dT%H:%M:%S%z") $*"
+    printf "%b\\n" "$(date +"%Y-%m-%dT%H:%M:%S%z") $*"
 }
 
 

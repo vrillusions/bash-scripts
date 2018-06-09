@@ -8,9 +8,9 @@ fi
 echo "Installing puppet using puppetlabs ppa"
 
 FILENAME="puppetlabs-release-$(lsb_release -cs).deb"
-wget http://apt.puppetlabs.com/$FILENAME
-dpkg -i $FILENAME
-rm -f $FILENAME
+wget "http://apt.puppetlabs.com/${FILENAME}"
+dpkg -i "${FILENAME}"
+rm -f "${FILENAME}"
 apt-get update
 apt-get install -y puppet
 

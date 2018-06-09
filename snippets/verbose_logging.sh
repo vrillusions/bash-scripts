@@ -7,7 +7,7 @@
 debug_echo() {
     # Display message if $VERBOSE >= 1
     if [ "$VERBOSE" -ge 1 ]; then
-        echo $1 1>&2
+        echo "$1" 1>&2
     fi
 }
 
@@ -31,3 +31,4 @@ if [ "$VERBOSE" -ge 3 ]; then
     set -x
 fi
 
+print "hello world" "${XSTDOUT}" "${XSTDERR}"

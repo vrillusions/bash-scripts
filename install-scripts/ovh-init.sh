@@ -3,7 +3,7 @@
 # Initial setup steps on an OVH server.
 #
 # Used environment variables:
-#   DEBUG - (default: false) if true will print more information on what it's 
+#   DEBUG - (default: false) if true will print more information on what it's
 #           doing
 #   TRACE - (default: false) traces the entire execution of script. Only useful
 #           if something really goes wrong
@@ -12,7 +12,8 @@
 # set script_dir to location this script is running in
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
-source ${SCRIPT_DIR}/functions/logging.sh
+cd "${SCRIPT_DIR}"
+source "./functions/logging.sh"
 
 # Options:
 # Turn on debug?

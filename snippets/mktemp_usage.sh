@@ -11,14 +11,14 @@
 set -e
 set -u
 
-script_name="$(basename $0)"
+script_name="$(basename "$0")"
 
 # BUG: need to test if ~/temp exists
 export TMPDIR=${TMPDIR:-"${HOME}/temp"}
-tmpfile=$(mktemp --tmpdir ${script_name}.XXXXXXXXX)
+tmpfile=$(mktemp --tmpdir "${script_name}.XXXXXXXXX")
 echo "Using temp file ${tmpfile}"
 
-trap "rm -f ${tmpfile}" EXIT
+trap 'rm -f "${tmpfile}"' EXIT
 
 # Just some example stuff to put in file
 uptime >>"${tmpfile}"

@@ -16,7 +16,7 @@
 domain_suffix='vpn.EXAMPLE.COM'
 
 hostfile=/tmp/hosts-openvpn
-lockfile=/tmp/learn-address.lock
+#lockfile=/tmp/learn-address.lock
 
 # WARNING: CURRENTLY CAN ENTER RACE CONDITION
 #
@@ -48,7 +48,7 @@ case "$1" in
 esac
 
 # signal dnsmasq to reread hosts file
-/bin/kill -HUP $(cat /var/run/dnsmasq.pid)
+/bin/kill -HUP "$(cat /var/run/dnsmasq.pid)"
 
 exit 0
 

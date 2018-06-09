@@ -16,7 +16,7 @@
 #   Anything other than 'true' will skip them (may be needed on older systems).
 #   Default is 'true'
 
-_version='2.0'
+_version='2.1'
 
 
 # -- setup some functions --
@@ -25,7 +25,7 @@ log () {
     # Usually I include a timestamp but not needed here
     # Still have this function since printf is theoretically better than echo
     #printf "%b\n" "$(date +"%Y-%m-%dT%H:%M:%S%z") $*"
-    printf "%b\n" "$*"
+    printf "%b\\n" "$*"
 }
 
 # usage: logerror "What to log to stderr"
@@ -74,7 +74,7 @@ speedtest () {
     printf "%30b: " "${friendly_name}"
     speedtest_result="$(($(curl -s -o /dev/null --write-out %\{speed_download\} \
         "${url}" | cut -d'.' -f1) / 1000)) KB/sec"
-    printf "%-15b\n" "${speedtest_result}"
+    printf "%-15b\\n" "${speedtest_result}"
 }
 
 # usage: pingtest "Friendly name" "address"
@@ -103,13 +103,13 @@ command_exists "openssl" || logfatal "Please install OpenSSL"
 # -- gather info --
 cpu_name="$(grep "model name" /proc/cpuinfo \
     | uniq \
-    | sed -e "s/^model name\s*: //")"
+    | sed -e 's/^model name\s*: //')"
 cpu_cores="$(grep -c "processor" /proc/cpuinfo)"
 cpu_freq="$(grep "cpu MHz" /proc/cpuinfo \
     | sort \
     | uniq \
     | head -1 \
-    | sed -e "s/^cpu MHz\s*: \(.*\)/\1 MHz/")"
+    | sed -e 's/^cpu MHz\s*: \(.*\)/\1 MHz/')"
 ram="$(free -m \
     | grep "Mem" \
     | awk '{print $2 " MB"}')"

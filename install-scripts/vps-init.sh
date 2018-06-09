@@ -24,7 +24,7 @@ echo
 
 # initial Q&A
 echo "Give the name of the new user to create:"
-read USER
+read -r USER
 echo
 
 # ---
@@ -61,30 +61,30 @@ echo
 # ---
 # Create normal user
 # TODO: check if user already exists, assume we created it already
-echo "Creating user $USER, You will be asked to input extra details and password"
-adduser $USER
-echo 
+echo "Creating user ${USER}, You will be asked to input extra details and password"
+adduser "${USER}"
+echo
 
 # ---
 # And add to admin groups
-echo "Adding user $USER to sudo and adm groups"
-adduser $USER sudo
-adduser $USER adm
+echo "Adding user ${USER} to sudo and adm groups"
+adduser "${USER}" sudo
+adduser "${USER}" adm
 echo
 
 # ---
 # SSH setup for new user
-echo "Generating ssh key for user $USER"
+echo "Generating ssh key for user ${USER}"
 echo "You'll be prompted for a password, typically this is left blank but feel"
 echo "free to enter one"
-mkdir /home/$USER/.ssh
-chown $USER:$USER /home/$USER/.ssh
-chmod 700 /home/$USER/.ssh
-su -c "ssh-keygen -t rsa -b 2048 -f /home/$USER/.ssh/id_rsa" $USER
+mkdir "/home/${USER}/.ssh"
+chown "${USER}":"${USER}" "/home/${USER}/.ssh"
+chmod 700 "/home/${USER}/.ssh"
+su -c "ssh-keygen -t rsa -b 2048 -f /home/${USER}/.ssh/id_rsa" "${USER}"
 if [ -f "sshkeys.txt" ]; then
-    cat sshkeys.txt >/home/$USER/.ssh/authorized_keys
-    chown $USER:$USER /home/$USER/.ssh/authorized_keys
-    chmod 600 /home/$USER/.ssh/authorized_keys
+    cat sshkeys.txt >"/home/${USER}/.ssh/authorized_keys"
+    chown "${USER}":"${USER}" "/home/${USER}/.ssh/authorized_keys"
+    chmod 600 "/home/${USER}/.ssh/authorized_keys"
 else
     echo "Could not find sshkeys.txt, skipping autopopulation of authorized_keys"
 fi
@@ -97,7 +97,7 @@ echo "Updating and configuring apt packages"
 dpkg --get-selections "*" >dpkg-original.txt
 apt-get update
 apt-get -y dist-upgrade
-apt-get -y install $APT_PKGS
+apt-get -y install "${APT_PKGS}"
 
 # ---
 # setup denyhosts

@@ -9,8 +9,8 @@ cp /usr/share/doc/backupninja/examples/example.sys /etc/backup.d/10-sysinfo.sys
 #cp /usr/share/doc/backupninja/examples/example.mysql /etc/backup.d/50-databases.mysql
 cp /usr/share/doc/backupninja/examples/example.rdiff /etc/backup.d/90-to_auron.rdiff
 cd /etc/backup.d
-chown root:root *
-chmod 600 *
+chown root:root ./*
+chmod 600 ./*
 # disable it for now
 mv 90-to_auron.rdiff 90-to_auron.rdiff.disabled
 vi 10-sysinfo.sys

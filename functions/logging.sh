@@ -1,3 +1,6 @@
+
+# only intended to be sourced, not run directly so no `#!/bin/bash`
+# shellcheck shell=bash
 #
 # Several function to print out to screen with a date stamp
 #
@@ -13,7 +16,7 @@
 
 # log "What to log"
 log () {
-    printf "%b\n" "$(date +"%Y-%m-%dT%H:%M:%S%z") $*"
+    printf "%b\\n" "$(date +"%Y-%m-%dT%H:%M:%S%z") $*"
 }
 
 # verbose "What to log if verbose is true"

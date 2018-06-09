@@ -26,7 +26,7 @@ fi
 
 # Usage: log "What to log"
 log () {
-    printf "%b\n" "$(date +"%Y-%m-%dT%H:%M:%S%z") $*"
+    printf "%b\\n" "$(date +"%Y-%m-%dT%H:%M:%S%z") $*"
 }
 
 # Used to generate a random passphrase. Can replace the command with whatever

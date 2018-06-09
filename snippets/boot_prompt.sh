@@ -17,7 +17,7 @@ interface="eth0"
 while getopts ":hdi:" opt; do
     case ${opt} in
     h)
-        echo "Usage: $(basename $0) [OPTION]"
+        echo "Usage: $(basename "$0") [OPTION]"
         echo 'Update /etc/issue with system IP'
         echo
         echo 'Options:'
@@ -42,10 +42,10 @@ while getopts ":hdi:" opt; do
         ;;
     esac
 done
-shift $(expr ${OPTIND} - 1)
+shift $(( OPTIND - 1 ))
 
 
-ip_address="$(/sbin/ifconfig ${interface} \
+ip_address="$(/sbin/ifconfig "${interface}" \
     | sed '/Bcast/!d' \
     | awk '{print $2}' \
     | awk '{print $2}' FS=":")"

@@ -22,7 +22,7 @@ readonly script_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 
 # -- env variables --
-SHELLCHECK_VERSION="${SHELLCHECK_VERSION:-"0.4.3"}"
+SHELLCHECK_VERSION="${SHELLCHECK_VERSION:-"0.4.6"}"
 
 
 # -- logging functions --
@@ -31,7 +31,7 @@ log () {
     # logger will output to syslog, useful for background tasks
     #logger -s -t "${script_name}" -- "$*"
     # printf is good for scripts run manually when needed
-    printf "%b\n" "$(date +"%Y-%m-%dT%H:%M:%S%z") $*"
+    printf "%b\\n" "$(date +"%Y-%m-%dT%H:%M:%S%z") $*"
 }
 
 
@@ -41,13 +41,18 @@ if [[ "$(uname -s)" == "Darwin" ]]; then
     brew install shellcheck
 else
     log "Performing linux environment install"
-    if [[ ! -d "${HOME}/bin" ]]; then
-        mkdir ~/bin
+    if command -v shellcheck 1>/dev/null; then
+        sc_version="$(shellcheck --version | grep -E '^version:' | cut -f2 -d' ')"
+        log "Existing shellcheck ${sc_version} found."
+    else
+        if [[ ! -d "${HOME}/bin" ]]; then
+            mkdir ~/bin
+        fi
+        curl -Ls \
+            -o "${HOME}/bin/shellcheck" \
+            "https://github.com/caarlos0/shellcheck-docker/releases/download/v${SHELLCHECK_VERSION}/shellcheck"
+        chmod +x "${HOME}/bin/shellcheck"
     fi
-    curl -Ls \
-        -o "${HOME}/bin/shellcheck" \
-        "https://github.com/caarlos0/shellcheck-docker/releases/download/v${SHELLCHECK_VERSION}/shellcheck"
-    chmod +x "${HOME}/bin/shellcheck"
 fi
 
 log 'Install process finished'

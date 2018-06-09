@@ -40,7 +40,7 @@ exit 1
 ### Logging functions
 # Usage: log "What to log"
 log () {
-    printf "%b\n" "$(date +"%Y-%m-%dT%H:%M:%S%z") $*"
+    printf "%b\\n" "$(date +"%Y-%m-%dT%H:%M:%S%z") $*"
 }
 # Usage: verbose "What to log if VERBOSE is true"
 verbose () {
@@ -77,7 +77,7 @@ VERBOSE=${VERBOSE:-"false"}
 while getopts ":hvqd:r:" opt; do
     case ${opt} in
     h)
-        echo "Usage: $(basename $0) [OPTION]"
+        echo "Usage: $(basename "$0") [OPTION]"
         echo 'Download discography from 8bitpeoples.com'
         echo
         echo 'Options:'
@@ -109,7 +109,7 @@ while getopts ":hvqd:r:" opt; do
         ;;
     esac
 done
-shift $(expr ${OPTIND} - 1)
+shift $(( OPTIND - 1 ))
 verbose "Additional arguments after options: $*"
 
 
@@ -124,15 +124,18 @@ release_number=${latest_release}
 
 # releases 001 and 002 aren't availble to download
 while [[ $release_number -gt 2 ]]; do
-    printf -v catalog_number "%03u" ${release_number}
+    printf -v catalog_number "%03u" "${release_number}"
     source_url="http://www.8bitpeoples.com/discography/zip/8BP${catalog_number}"
     output_file="${destination_dir}/8BP${catalog_number}.zip"
-    exit_status=$(wget ${wget_opts} ${output_level} "${source_url}" -O "${output_file}" | echo $?)
+    # wget_opts and output_level can't be quoted
+    # shellcheck disable=SC2086
+    wget ${wget_opts} ${output_level} "${source_url}" -O "${output_file}"
+    exit_status=$?
     if [[ ${exit_status} -eq 4 ]]; then
         logerror "Network failure, possibly file doesn't exist. Attempted url:"
         logerror "${source_url}"
     fi
-    printf -v release_number "%u" $((${release_number} - 1))
+    printf -v release_number "%u" $((release_number - 1))
     sleep $sleeptime
 done
 

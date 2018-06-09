@@ -1,3 +1,7 @@
+## v2.1 - 2018-06-09
+
+- fix tests caught by more recent version of shellcheck
+
 ## v2.0 - 2015-11-21
 
 - format output a little better (reason for bump in major version in case it breaks someone's scripts)
