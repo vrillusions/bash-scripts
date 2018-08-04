@@ -69,6 +69,9 @@ get_dns_type () {
         ECDSA)
             dns_type=3
             ;;
+        ED25519)
+            dns_type=4
+            ;;
         *)
             dns_type="UNKNOWN"
             ;;
@@ -103,7 +106,8 @@ process_key () {
         #keygen_info=ssh-keygen -l -f /etc/ssh/ssh_host_rsa_key.pub | tr -d '()' | cut -d' ' -f 5
         keygen_info="$(ssh-keygen -l -f "${filename}")"
         fingerprint="$(echo "${keygen_info}" | cut -d' ' -f2)"
-        key_type="$(echo "${keygen_info}" | cut -d' ' -f5 | tr -d '()')"
+        # shellcheck disable=SC2001
+        key_type="$(echo "${keygen_info}" | sed -e 's/^.*(\(.*\))$/\1/')"
         sha1="$(echo "${pubkey}" | openssl base64 -d -A | openssl sha1 | awk '{print $2}')"
         sha256="$(echo "${pubkey}" | openssl base64 -d -A | openssl sha256 | awk '{print $2}')"
         dns_sha1="$(hostname -f). 86400 IN SSHFP $(get_dns_type "${key_type}") 1 ${sha1}"
@@ -125,6 +129,7 @@ printf "%s\\n" "SSH KEYS FOR HOST ${hostupper}"
 process_key "/etc/ssh/ssh_host_rsa_key.pub"
 process_key "/etc/ssh/ssh_host_dsa_key.pub"
 process_key "/etc/ssh/ssh_host_ecdsa_key.pub"
+process_key "/etc/ssh/ssh_host_ed25519_key.pub"
 printf "\\n%s\\n" "ALL THE DNS RECORDS IN ONE BLOCK"
 cat "${tmpfile}"
 
